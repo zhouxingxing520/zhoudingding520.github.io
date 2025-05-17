@@ -1,2 +1,195 @@
 # zhoudingding520.github.io
 A love confession page
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>给❤️你的信</title>
+    <style>
+        body {
+            background: pink;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        .hearts, .stars {
+            pointer-events: none;
+            position: fixed;
+            top: -20px;
+            animation: fall 3s linear infinite;
+            z-index: 1;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+        .firework {
+            position: absolute;
+            animation: explode 1s ease-out;
+            z-index: 2;
+        }
+        @keyframes explode {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        button {
+            padding: 15px 30px;
+            margin: 20px;
+            font-size: 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            border: none;
+            z-index: 3;
+            position: relative;
+        }
+        button:hover {
+            transform: scale(1.1);
+        }
+        #acceptBtn { 
+            background: linear-gradient(45deg, #ff4081, #ff6b6b);
+            color: white;
+            box-shadow: 0 4px 6px rgba(255, 64, 129, 0.3);
+        }
+        #rejectBtn { 
+            background: linear-gradient(45deg, #e0e0e0, #f5f5f5);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .content { 
+            margin: 80px auto;
+            max-width: 600px;
+            line-height: 1.6;
+            z-index: 2;
+            position: relative;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="content" id="content">
+        <h1>亲爱的[名字]</h1>
+        <p>从遇见你的那天起，我的世界开始有了不同的颜色...</p >
+    </div>
+    <button id="acceptBtn">❤️ 我愿意</button>
+    <button id="rejectBtn">😢 再想想</button>
+
+    <script>
+        // 修改点：改用sessionStorage并确保数字类型
+        let rejectCount = parseInt(sessionStorage.getItem('rejectCount')) || 0;
+        
+        // 爱心生成器
+        function createHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.className = 'hearts';
+                heart.style.left = Math.random() * 95 + 'vw';
+                heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+                heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }, 300);
+        }
+
+        // 拒绝处理
+        function handleReject() {
+            rejectCount++;
+            // 修改点：使用sessionStorage存储
+            sessionStorage.setItem('rejectCount', rejectCount);
+            
+            const contents = [
+                {
+                    text: "没有你，我的世界将失去色彩...",
+                    gif: "😭",
+                    style: "color: #ff4081; font-size: 24px;"
+                },
+                {
+                    text: "能否给我最后一次机会？",
+                    gif: "😢",
+                    style: "color: #666; font-size: 22px;"
+                },
+                {
+                    text: "无论结果如何，你永远是我心中最亮的星✨",
+                    effect: 'stars',
+                    style: "color: #4CAF50; font-size: 26px;"
+                }
+            ];
+            
+            const current = contents[Math.min(rejectCount-1, 2)];
+            document.getElementById('content').innerHTML = `
+                <h1 style="${current.style}">${current.text}</h1>
+                ${current.gif ? `<div style="font-size:60px;margin:20px">${current.gif}</div>` : ''}
+            `;
+
+            if(current.effect === 'stars') {
+                createStars();
+                document.getElementById('rejectBtn').remove();
+            }
+        }
+
+        // 接受处理
+        function handleAccept() {
+            document.body.innerHTML = `
+                <div class="content">
+                    <h1 style="color: #ff4081; font-size: 36px;">🎉 我们在一起啦！</h1>
+                    <p style="font-size: 24px;">往后余生，请多指教 ❤️</p >
+                    <div style="font-size: 80px; margin-top: 30px;">🎆🎇✨</div>
+                </div>
+            `;
+            createFireworks();
+        }
+
+        // 创建星星
+        function createStars() {
+            setInterval(() => {
+                const star = document.createElement('div');
+                star.innerHTML = '✨';
+                star.className = 'stars';
+                star.style.left = Math.random() * 95 + 'vw';
+                star.style.fontSize = Math.random() * 20 + 20 + 'px';
+                star.style.animationDuration = Math.random() * 2 + 3 + 's';
+                document.body.appendChild(star);
+                setTimeout(() => star.remove(), 5000);
+            }, 200);
+        }
+
+        // 创建烟花
+        function createFireworks() {
+            const colors = ['#ff4081', '#4CAF50', '#2196F3'];
+            setInterval(() => {
+                const firework = document.createElement('div');
+                firework.className = 'firework';
+                firework.style.left = Math.random() * 90 + 'vw';
+                firework.style.top = Math.random() * 90 + 'vh';
+                firework.style.color = colors[Math.floor(Math.random() * colors.length)];
+                firework.innerHTML = '🎆';
+                firework.style.fontSize = Math.random() * 30 + 40 + 'px';
+                document.body.appendChild(firework);
+                setTimeout(() => firework.remove(), 1000);
+            }, 300);
+        }
+
+        // 事件绑定
+        document.getElementById('acceptBtn').addEventListener('click', handleAccept);
+        document.getElementById('rejectBtn').addEventListener('click', handleReject);
+        
+        // 初始化
+        createHearts();
+        if(rejectCount >= 3) {
+            document.getElementById('rejectBtn').remove();
+            createStars();
+        }
+
+        // 新增：页面关闭时重置计数（可选）
+        window.addEventListener('beforeunload', () => {
+            sessionStorage.removeItem('rejectCount');
+        });
+    </script>
+</body>
+</html>
