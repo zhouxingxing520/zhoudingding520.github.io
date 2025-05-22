@@ -73,7 +73,7 @@ A love confession page
 </head>
 <body>
     <div class="content" id="content">
-        <h1>亲爱的[名字]</h1>
+        <h1>亲爱的梁小倩</h1>
         <p>从遇见你的那天起，我的世界开始有了不同的颜色...</p >
     </div>
     <button id="acceptBtn">❤️ 我愿意</button>
